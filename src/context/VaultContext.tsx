@@ -46,6 +46,9 @@ interface VaultContextType {
   toggleTheme: () => void;
   isAuthenticated: boolean;
   setIsAuthenticated: (val: boolean) => void;
+  logoutSession: () => void;
+  resetVaultState: (nextUser?: Partial<UserProfile>) => void;
+  loadDemoVault: () => void;
   user: UserProfile;
   setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
   assets: AssetItem[];
@@ -111,8 +114,25 @@ interface VaultContextType {
 
 const VaultContext = createContext<VaultContextType | undefined>(undefined);
 
+const emptyUser: UserProfile = {
+  name: '',
+  email: '',
+  phone: '',
+  tier: 'Free',
+  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&auto=format&fit=crop&q=80',
+  joinedDate: 'Just now',
+  emergencyTriggerDelayHours: 48,
+  biometricEnabled: false,
+  mfaEnabled: false,
+  zeroKnowledgeKeyBackup: false,
+  emergencyModeActive: false,
+};
+
 export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentView, setCurrentView] = useState<AppView>('dashboard');
+  const [currentView, setCurrentView] = useState<AppView>(() => {
+    const savedAuth = localStorage.getItem('lifevault_authenticated');
+    return savedAuth === 'true' ? 'dashboard' : 'landing';
+  });
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
@@ -126,8 +146,35 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [theme]);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     const savedAuth = localStorage.getItem('lifevault_authenticated');
-    return savedAuth !== null ? savedAuth === 'true' : true;
+    return savedAuth === 'true';
   });
+
+  const setCurrentViewSafe = (view: AppView) => {
+    if (!isAuthenticated && view !== 'landing') {
+      setCurrentView('landing');
+      return;
+    }
+    setCurrentView(view);
+  };
+
+  const logoutSession = () => {
+    setIsAuthenticated(false);
+    setCurrentView('landing');
+    localStorage.setItem('lifevault_authenticated', 'false');
+    localStorage.removeItem('lifevault_user');
+    localStorage.removeItem('lifevault_assets');
+    localStorage.removeItem('lifevault_documents');
+    localStorage.removeItem('lifevault_people');
+    localStorage.removeItem('lifevault_recovery');
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setCurrentView('dashboard');
+    } else {
+      setCurrentView('landing');
+    }
+  }, [isAuthenticated]);
 
   // Sync auth state to localStorage and listen for multi-tab logout/login
   useEffect(() => {
@@ -177,6 +224,196 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const saved = localStorage.getItem('lifevault_recovery');
     return saved ? JSON.parse(saved) : INITIAL_RECOVERY_STEPS;
   });
+
+  const loadDemoVault = () => {
+    setUser(INITIAL_USER);
+    setAssets(INITIAL_ASSETS);
+    setDocuments(INITIAL_DOCUMENTS);
+    setTrustedPeople(INITIAL_TRUSTED_PEOPLE);
+    setRecoverySteps(INITIAL_RECOVERY_STEPS);
+    setAuditLogs(INITIAL_AUDIT_LOGS);
+    setChatMessages(INITIAL_CHAT_MESSAGES);
+    setEmergencyActive(false);
+    setPipelineStep(1);
+    setActiveExecutor(INITIAL_EXECUTORS[0]);
+    setTransferTrackers(INITIAL_TRANSFER_TRACKERS);
+    setRecoveryTimelineTasks(INITIAL_RECOVERY_TIMELINE_TASKS);
+    setIdentityState({
+      idType: 'Aadhaar',
+      idNumber: '8842-9901-4412',
+      idDocumentUploaded: true,
+      idDocumentName: 'Aadhaar_AnanyaSharma_Verified.pdf',
+      selfieVerified: true,
+      selfieLivenessScore: 99.4,
+      otpVerified: true,
+      otpCode: '884920',
+      verifiedAt: 'Today, 08:30 AM',
+      status: 'verified',
+    });
+    setRelationshipState({
+      proofType: 'marriage_certificate',
+      documentUploaded: true,
+      documentName: 'Marriage_Registration_Certificate_TS_2016.pdf',
+      confidenceScore: 98.6,
+      ocrMatchDetails: {
+        applicantName: 'Ananya Sharma',
+        vaultOwnerName: 'Chandan Vamsi',
+        registryAuthority: 'Govt of Telangana Marriage Registrar',
+        issueDate: '18 Nov 2016',
+      },
+      verifiedAt: 'Today, 08:31 AM',
+      status: 'verified',
+    });
+    setEmergencyEventState({
+      eventType: 'death',
+      deathDetails: {
+        certificateUploaded: true,
+        certificateFileName: 'Official_Death_Certificate_GHMC.pdf',
+        registrationNumber: 'DL-NDMC-2026-884920',
+        issuingAuthority: 'Greater Hyderabad Municipal Corp (CRS Portal)',
+        dateOfDemise: '24 Feb 2026',
+        placeOfDemise: 'Apollo Hospitals, Jubilee Hills, Hyderabad',
+        nameMatched: true,
+        dobMatched: true,
+        crsGovApiValidated: true,
+        qrHashValid: true,
+      },
+      hospitalizationDetails: {
+        admissionLetterUploaded: true,
+        admissionDocName: 'Apollo_ICU_Admission_Summary.pdf',
+        hospitalName: 'Apollo Hospitals, Hyderabad',
+        attendingPhysician: 'Dr. Suresh R. Reddy, MD',
+        physicianRegNumber: 'TS-MCI-48192',
+        ownerOtpRequested: true,
+        ownerOtpConfirmed: false,
+        icuStatus: true,
+      },
+      missingDetails: {
+        firUploaded: true,
+        firDocName: 'Police_FIR_Hyderabad_Cyberabad.pdf',
+        firNumber: 'FIR-CYB-2026-0941',
+        policeStation: 'Gachibowli Cyber Crime & Missing Persons Unit',
+        investigatingOfficer: 'Insp. R. Venkatesh',
+        reportedDate: '20 Feb 2026',
+        waitingPeriodHoursRemaining: 48,
+        waitingPeriodTotalHours: 72,
+      },
+      verifiedAt: 'Today, 08:32 AM',
+      status: 'verified',
+    });
+    setRiskState({
+      riskScore: 12,
+      riskLevel: 'low',
+      deviceStatus: 'trusted',
+      deviceFingerprint: 'FP-MACOS-SAFARI-892A',
+      ipAddress: '103.212.45.18',
+      ipLocation: 'Hyderabad, Telangana, IN',
+      isp: 'Airtel Broadband Fiber',
+      vpnOrProxyDetected: false,
+      failedAttemptsCount: 0,
+      documentMatchPercentage: 100,
+      behavioralAnomalyScore: 4,
+      actionRequired: 'None — Safe for Progressive Access',
+      evaluatedAt: 'Today, 08:33 AM',
+    });
+    setProgressiveUnlockedStage('stage2_verified_family');
+  };
+
+  const resetVaultState = (nextUser?: Partial<UserProfile>) => {
+    const freshUser = nextUser ? { ...emptyUser, ...nextUser } : emptyUser;
+    setUser(freshUser);
+    setAssets([]);
+    setDocuments([]);
+    setTrustedPeople([]);
+    setRecoverySteps([]);
+    setAuditLogs([]);
+    setChatMessages([]);
+    setEmergencyActive(false);
+    setPipelineStep(1);
+    setTransferTrackers([]);
+    setRecoveryTimelineTasks([]);
+    setActiveExecutor(INITIAL_EXECUTORS[0]);
+    setProgressiveUnlockedStage('stage1_immediate');
+    setIdentityState({
+      idType: 'Aadhaar',
+      idNumber: '',
+      idDocumentUploaded: false,
+      idDocumentName: '',
+      selfieVerified: false,
+      selfieLivenessScore: 0,
+      otpVerified: false,
+      otpCode: '',
+      verifiedAt: '',
+      status: 'pending',
+    });
+    setRelationshipState({
+      proofType: 'marriage_certificate',
+      documentUploaded: false,
+      documentName: '',
+      confidenceScore: 0,
+      ocrMatchDetails: {
+        applicantName: '',
+        vaultOwnerName: '',
+        registryAuthority: '',
+        issueDate: '',
+      },
+      verifiedAt: '',
+      status: 'pending',
+    });
+    setEmergencyEventState({
+      eventType: 'death',
+      deathDetails: {
+        certificateUploaded: false,
+        certificateFileName: '',
+        registrationNumber: '',
+        issuingAuthority: '',
+        dateOfDemise: '',
+        placeOfDemise: '',
+        nameMatched: false,
+        dobMatched: false,
+        crsGovApiValidated: false,
+        qrHashValid: false,
+      },
+      hospitalizationDetails: {
+        admissionLetterUploaded: false,
+        admissionDocName: '',
+        hospitalName: '',
+        attendingPhysician: '',
+        physicianRegNumber: '',
+        ownerOtpRequested: false,
+        ownerOtpConfirmed: false,
+        icuStatus: false,
+      },
+      missingDetails: {
+        firUploaded: false,
+        firDocName: '',
+        firNumber: '',
+        policeStation: '',
+        investigatingOfficer: '',
+        reportedDate: '',
+        waitingPeriodHoursRemaining: 0,
+        waitingPeriodTotalHours: 0,
+      },
+      verifiedAt: '',
+      status: 'pending',
+    });
+    setRiskState({
+      riskScore: 0,
+      riskLevel: 'low',
+      deviceStatus: 'new_device',
+      deviceFingerprint: '',
+      ipAddress: '',
+      ipLocation: '',
+      isp: '',
+      vpnOrProxyDetected: false,
+      failedAttemptsCount: 0,
+      documentMatchPercentage: 0,
+      behavioralAnomalyScore: 0,
+      actionRequired: 'Needs setup',
+      evaluatedAt: '',
+    });
+  };
+
   const [executors] = useState<ExecutorProfile[]>(INITIAL_EXECUTORS);
   const [activeExecutor, setActiveExecutor] = useState<ExecutorProfile>(INITIAL_EXECUTORS[0]);
   const [transferTrackers, setTransferTrackers] = useState<TransferProcessTracker[]>(INITIAL_TRANSFER_TRACKERS);
@@ -639,11 +876,14 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <VaultContext.Provider
       value={{
         currentView,
-        setCurrentView,
+        setCurrentView: setCurrentViewSafe,
         theme,
         toggleTheme,
         isAuthenticated,
         setIsAuthenticated,
+        logoutSession,
+        resetVaultState,
+        loadDemoVault,
         user,
         setUser,
         assets,

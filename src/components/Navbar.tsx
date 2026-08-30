@@ -26,10 +26,10 @@ export const Navbar: React.FC = () => {
     user,
     currentView,
     isAuthenticated,
-    setIsAuthenticated,
     setAuthModalOpen,
     setAuthMode,
     showToast,
+    logoutSession,
   } = useVault();
 
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -40,9 +40,8 @@ export const Navbar: React.FC = () => {
   const isDark = theme === 'dark';
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logoutSession();
     setProfileMenuOpen(false);
-    setCurrentView('landing');
     showToast({
       type: 'security',
       title: 'Vault Locked & Signed Out',

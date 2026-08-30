@@ -274,37 +274,8 @@ export const LandingPage: React.FC = () => {
             </a>
           </div>
 
-          {/* Right: Actions + Circular Theme Switch */}
+          {/* Right: Actions */}
           <div className="flex items-center space-x-3 sm:space-x-4">
-            {/* Theme Toggle: Circular glass button with 360 rotation */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${
-                isDark
-                  ? 'bg-[#111111]/80 border-[#232323] text-neutral-300 hover:border-[#16A34A] hover:text-white'
-                  : 'bg-white/80 border-[#E5E7EB] text-neutral-700 hover:border-[#16A34A] hover:text-neutral-900 shadow-xs'
-              }`}
-              title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={theme}
-                  initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {isDark ? (
-                    <Sun className="w-4 h-4 text-amber-400" />
-                  ) : (
-                    <Moon className="w-4 h-4 text-neutral-700" />
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </motion.button>
-
-            {/* Sign In button */}
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
@@ -319,10 +290,9 @@ export const LandingPage: React.FC = () => {
               }`}
             >
               <LogIn className="w-3.5 h-3.5 text-[#27AE60]" />
-              <span>Sign In</span>
+              <span>Login</span>
             </motion.button>
 
-            {/* Sign Up button */}
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
@@ -334,17 +304,6 @@ export const LandingPage: React.FC = () => {
             >
               <Shield className="w-3.5 h-3.5" />
               <span>Sign Up</span>
-            </motion.button>
-
-            {/* Launch App Primary Button */}
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setCurrentView('dashboard')}
-              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-[20px] bg-gradient-to-r from-[#16A34A] to-[#22C55E] hover:from-[#15803d] hover:to-[#16A34A] text-white text-xs font-bold shadow-[0_0_25px_rgba(22,163,74,0.35)] transition-all flex items-center space-x-2 cursor-pointer"
-            >
-              <span>Open Vault</span>
-              <ArrowRight className="w-3.5 h-3.5" />
             </motion.button>
           </div>
         </div>

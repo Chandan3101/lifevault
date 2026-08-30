@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LifeVaultLogo } from './LifeVaultLogo';
+import { INITIAL_USER } from '../data/mockData';
 
 export const AuthModal: React.FC = () => {
   const {
@@ -25,11 +26,17 @@ export const AuthModal: React.FC = () => {
     setUser,
     showToast,
     theme,
+    resetVaultState,
+    loadDemoVault,
   } = useVault();
 
-  const [email, setEmail] = useState('chandanvamsi101@gmail.com');
-  const [password, setPassword] = useState('••••••••••••');
-  const [name, setName] = useState('Chandan Vamsi');
+  const DEMO_EMAIL = 'chandanvamsi101@gmail.com';
+  const DEMO_PASSWORD = 'LifeVault123';
+
+  const [email, setEmail] = useState(DEMO_EMAIL);
+  const [password, setPassword] = useState(DEMO_PASSWORD);
+  const [name, setName] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
   const [emergencyContact, setEmergencyContact] = useState('+91 98450 19284 (Ananya Sharma)');
   const [isFaceIdScanning, setIsFaceIdScanning] = useState(false);
   const [faceIdSuccess, setFaceIdSuccess] = useState(false);
@@ -40,6 +47,28 @@ export const AuthModal: React.FC = () => {
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedPassword = password.trim();
+
+    if (normalizedEmail === DEMO_EMAIL.toLowerCase() && normalizedPassword === DEMO_PASSWORD) {
+      loadDemoVault();
+      setIsAuthenticated(true);
+      setAuthModalOpen(false);
+      showToast({
+        type: 'security',
+        title: 'Authenticated Successfully',
+        message: 'Demo vault unlocked and ready for review.',
+      });
+      return;
+    }
+
+    setUser((prev) => ({
+      ...prev,
+      name: name || prev.name || 'Account Holder',
+      email: normalizedEmail || prev.email || 'user@lifvault.app',
+      tier: 'Standard',
+      avatar: prev.avatar,
+    }));
     setIsAuthenticated(true);
     setAuthModalOpen(false);
     showToast({
@@ -51,17 +80,30 @@ export const AuthModal: React.FC = () => {
 
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const nextName = name.trim();
+    const nextEmail = email.trim();
+
+    if (!nextName || !nextEmail || !signupPassword.trim()) return;
+
+    resetVaultState({
+      name: nextName,
+      email: nextEmail,
+      phone: '',
+      tier: 'Free',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&auto=format&fit=crop&q=80',
+      joinedDate: 'Just now',
+      emergencyTriggerDelayHours: 48,
+      biometricEnabled: false,
+      mfaEnabled: false,
+      zeroKnowledgeKeyBackup: false,
+      emergencyModeActive: false,
+    });
     setIsAuthenticated(true);
-    setUser((prev) => ({
-      ...prev,
-      name,
-      email,
-    }));
     setAuthModalOpen(false);
     showToast({
       type: 'success',
       title: 'LifeVault Account Provisioned',
-      message: `Welcome to LIFEVAULT AI, ${name}. Security enclave initialized.`,
+      message: `Welcome to LIFEVAULT AI, ${nextName}. Your vault is ready and empty.`,
     });
   };
 
@@ -297,15 +339,15 @@ export const AuthModal: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-medium text-neutral-400 mb-1">Primary Emergency Trustee Contact</label>
+                <label className="block text-[11px] font-medium text-neutral-400 mb-1">Password</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Lock className="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
-                    type="text"
+                    type="password"
                     required
-                    value={emergencyContact}
-                    onChange={(e) => setEmergencyContact(e.target.value)}
-                    placeholder="+91 98450 19284 (Spouse / Next of Kin)"
+                    value={signupPassword}
+                    onChange={(e) => setSignupPassword(e.target.value)}
+                    placeholder="Create a secure password"
                     className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all ${
                       isDark ? 'bg-[#181818] border-[#262626] text-white' : 'bg-neutral-50 border-neutral-200 text-neutral-900'
                     }`}

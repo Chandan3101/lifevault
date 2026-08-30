@@ -41,20 +41,19 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
     setAuthModalOpen,
     setAuthMode,
     setCommandPaletteOpen,
-    setIsAuthenticated,
     showToast,
+    logoutSession,
   } = useVault();
   const isDark = theme === 'dark';
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logoutSession();
     onClose();
     showToast({
       type: 'security',
       title: 'Vault Locked & Signed Out',
       message: 'Master hardware enclave key purged from memory.',
     });
-    setCurrentView('landing');
   };
 
   const navItems: { id: AppView; label: string; icon: any; badge?: string; desc: string; isSpecial?: boolean }[] = [

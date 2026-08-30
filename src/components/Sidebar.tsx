@@ -26,8 +26,8 @@ export const Sidebar: React.FC = () => {
     emergencyActive,
     user,
     theme,
-    setIsAuthenticated,
     showToast,
+    logoutSession,
   } = useVault();
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,13 +35,12 @@ export const Sidebar: React.FC = () => {
 
   const handleLogout = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsAuthenticated(false);
+    logoutSession();
     showToast({
       type: 'security',
       title: 'Vault Locked & Signed Out',
       message: 'Vault secured successfully.',
     });
-    setCurrentView('landing');
   };
 
   const menuItems: { id: AppView; label: string; icon: any; badge?: string }[] = [

@@ -25,10 +25,11 @@ import { SettingsView } from './views/SettingsView';
 import { motion, AnimatePresence } from 'motion/react';
 
 const MainLayout: React.FC = () => {
-  const { currentView, theme } = useVault();
+  const { currentView, theme, isAuthenticated } = useVault();
   const isDark = theme === 'dark';
+  const shouldShowLanding = !isAuthenticated && currentView !== 'landing';
 
-  if (currentView === 'landing') {
+  if (currentView === 'landing' || shouldShowLanding) {
     return (
       <div className={`min-h-screen relative ${isDark ? 'bg-[#000000] text-white' : 'bg-[#ffffff] text-[#37352f]'}`}>
         <CursorSpotlight />
