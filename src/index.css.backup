@@ -1,0 +1,409 @@
+@import "tailwindcss";
+
+/* =========================================================
+   LIFEVAULT — MINIMAL PRODUCT DESIGN SYSTEM
+   Notion / Linear inspired
+   ========================================================= */
+
+@layer base {
+  :root {
+    /* Background */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f7f5;
+    --bg-hover: #f1f1f0;
+
+    /* Text */
+    --text-primary: #37352f;
+    --text-secondary: #787774;
+    --text-tertiary: #9b9a97;
+
+    /* Borders */
+    --border-color: #e9e9e7;
+    --border-strong: #deddda;
+
+    /* Semantic */
+    --success: #27ae60;
+    --danger: #eb5757;
+    --warning: #f2c94c;
+    --info: #2f80ed;
+
+    /* Brand */
+    --accent: #27ae60;
+
+    /* Layout */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+  }
+
+  .dark {
+    /* Background */
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-hover: #1a1a1a;
+
+    /* Text */
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --text-tertiary: #6f6f6f;
+
+    /* Borders */
+    --border-color: #2f2f2f;
+    --border-strong: #3a3a3a;
+
+    /* Semantic */
+    --success: #27ae60;
+    --danger: #eb5757;
+    --warning: #f2c94c;
+    --info: #2f80ed;
+
+    /* Brand */
+    --accent: #27ae60;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+
+    background: var(--bg-primary);
+    color: var(--text-primary);
+
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Helvetica,
+      Arial,
+      sans-serif;
+
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: rgba(39, 174, 96, 0.18);
+  }
+}
+
+/* =========================================================
+   GLOBAL BACKGROUND
+   ========================================================= */
+
+.noise-overlay {
+  background-color: var(--bg-primary);
+}
+
+/* Remove the old glassmorphism visual language */
+.glass-pill,
+.glass-card,
+.glass-dock {
+  background: var(--bg-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--border-color);
+}
+
+/* =========================================================
+   COMMON PRODUCT SURFACES
+   ========================================================= */
+
+.lv-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.lv-card-hover {
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.lv-card-hover:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 34px;
+  padding: 7px 13px;
+
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+
+  background: var(--accent);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 34px;
+  padding: 7px 13px;
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+.btn-red {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.btn-green {
+  background: var(--success);
+  color: #ffffff;
+}
+
+.btn-yellow {
+  background: var(--warning);
+  color: #111111;
+}
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.lv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 3px 8px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+
+  background: var(--bg-secondary);
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.lv-badge-success {
+  color: var(--success);
+  border-color: rgba(39, 174, 96, 0.25);
+  background: rgba(39, 174, 96, 0.08);
+}
+
+.lv-badge-danger {
+  color: var(--danger);
+  border-color: rgba(235, 87, 87, 0.25);
+  background: rgba(235, 87, 87, 0.08);
+}
+
+.lv-badge-warning {
+  color: #9a7600;
+  border-color: rgba(242, 201, 76, 0.3);
+  background: rgba(242, 201, 76, 0.12);
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.lv-input {
+  width: 100%;
+  min-height: 36px;
+
+  padding: 7px 10px;
+
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  outline: none;
+
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.lv-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.lv-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.12);
+}
+
+/* =========================================================
+   DIVIDERS
+   ========================================================= */
+
+.lv-divider {
+  height: 1px;
+  width: 100%;
+  background: var(--border-color);
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.lv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lv-table th {
+  padding: 9px 12px;
+
+  border-bottom: 1px solid var(--border-color);
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lv-table td {
+  padding: 11px 12px;
+
+  border-bottom: 1px solid var(--border-color);
+
+  color: var(--text-primary);
+
+  font-size: 13px;
+}
+
+.lv-table tbody tr {
+  transition: background-color 100ms ease;
+}
+
+.lv-table tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+/* =========================================================
+   FOCUS / ACCESSIBILITY
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

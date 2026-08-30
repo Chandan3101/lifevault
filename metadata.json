@@ -1,0 +1,7 @@
+{
+  "name": "LIFEVAULT AI",
+  "description": "A secure AI-powered Digital Legacy and Life Continuity Platform. Your Life. Protected Today. Preserved Tomorrow.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
