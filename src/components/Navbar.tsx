@@ -94,9 +94,8 @@ export const Navbar: React.FC = () => {
       }}
     >
       <div
-        className={`mx-auto flex w-full max-w-[1440px] items-center gap-3 rounded-[18px] border px-3 py-2.5 md:px-4 ${
-          isDark ? 'border-[var(--border-color)] bg-[#0d0d0d]/90' : 'border-[var(--border-color)] bg-[var(--bg-primary)]/90'
-        } backdrop-blur-sm`}
+        className={`mx-auto flex w-full max-w-[1440px] items-center gap-3 rounded-[18px] border px-3 py-2.5 md:px-4 ${isDark ? 'border-[var(--border-color)] bg-[#0d0d0d]/90' : 'border-[var(--border-color)] bg-[var(--bg-primary)]/90'
+          } backdrop-blur-sm`}
       >
         <button
           type="button"
@@ -124,15 +123,11 @@ export const Navbar: React.FC = () => {
             type="button"
             whileTap={{ scale: 0.98 }}
             onClick={() => setCommandPaletteOpen(true)}
-            className={`flex w-full items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] px-3 py-2 text-left text-xs transition hover:border-[#27AE60]/40 hover:shadow-[0_0_0_3px_rgba(39,174,96,0.08)] md:w-[280px] ${
-              isDark ? 'text-[var(--text-secondary)]' : 'text-[var(--text-secondary)]'
-            }`}
+            className={`flex w-full items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] px-3 py-2 text-left text-xs transition hover:border-[#27AE60]/40 hover:shadow-[0_0_0_3px_rgba(39,174,96,0.08)] md:w-[480px] ${isDark ? 'text-[var(--text-secondary)]' : 'text-[var(--text-secondary)]'
+              }`}
           >
             <Search className="h-3.5 w-3.5" />
             <span className="truncate">Search assets, documents, trustees...</span>
-            <kbd className="ml-auto hidden rounded-md border border-[var(--border-color)] bg-[var(--bg-primary)] px-1.5 py-0.5 text-[9px] font-medium text-[var(--text-muted)] md:inline-block">
-              Ctrl K
-            </kbd>
           </motion.button>
         </div>
 
@@ -159,9 +154,8 @@ export const Navbar: React.FC = () => {
                       initial={{ opacity: 0, y: 8, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                      className={`absolute right-0 z-50 mt-3 w-52 rounded-[18px] border p-2 ${
-                        isDark ? 'border-[var(--border-color)] bg-[#111111] text-white' : 'border-[var(--border-color)] bg-white text-[var(--text-primary)]'
-                      }`}
+                      className={`absolute right-0 z-50 mt-3 w-52 rounded-[18px] border p-2 ${isDark ? 'border-[var(--border-color)] bg-[#111111] text-white' : 'border-[var(--border-color)] bg-white text-[var(--text-primary)]'
+                        }`}
                     >
                       <button
                         type="button"

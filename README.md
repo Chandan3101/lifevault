@@ -40,25 +40,25 @@ The project combines a React dashboard with an Express API, PostgreSQL persisten
 
 1. Install dependencies:
 
-	```bash
-	npm install
-	```
+   ```bash
+   npm install
+   ```
 
 2. Create a `.env` file in the project root:
 
-	```env
-	DATABASE_URL=postgresql://postgres:password@localhost:5432/lifevault
-	JWT_SECRET=replace-with-a-long-random-secret
-	GEMINI_API_KEY=your-gemini-api-key
-	```
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/lifevault
+   JWT_SECRET=replace-with-a-long-random-secret
+   GEMINI_API_KEY=your-gemini-api-key # Optional
+   ```
 
-	`GEMINI_API_KEY` is optional. Without it, the AI chat endpoint uses a deterministic local fallback. `DATABASE_URL` and `JWT_SECRET` are required.
+   `GEMINI_API_KEY` is optional. Without it, the AI chat endpoint uses a deterministic local fallback. `DATABASE_URL` and `JWT_SECRET` are required.
 
 3. Start the development server:
 
-	```bash
-	npm run dev
-	```
+   ```bash
+   npm run dev
+   ```
 
 4. Open [http://localhost:3000](http://localhost:3000).
 
@@ -66,14 +66,14 @@ On first startup, the server creates the `users`, `assets`, `documents`, and `tr
 
 ## Available Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Express API with Vite development middleware |
-| `npm run build` | Build the frontend and bundle the production server |
-| `npm start` | Run the bundled production server from `dist/server.cjs` |
-| `npm run preview` | Preview the Vite frontend build |
-| `npm run lint` | Run the TypeScript compiler without emitting files |
-| `npm run clean` | Remove generated build output |
+| Command           | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `npm run dev`     | Start the Express API with Vite development middleware   |
+| `npm run build`   | Build the frontend and bundle the production server      |
+| `npm start`       | Run the bundled production server from `dist/server.cjs` |
+| `npm run preview` | Preview the Vite frontend build                          |
+| `npm run lint`    | Run the TypeScript compiler without emitting files       |
+| `npm run clean`   | Remove generated build output                            |
 
 ## API Overview
 
@@ -139,4 +139,3 @@ src/data/mockData.ts   Demo and initial UI data
 - Configure a strong, unique `JWT_SECRET`; changing it invalidates existing sessions.
 - Review and harden the generated Supabase schema before using it in production.
 - LIFEVAULT AI is an application prototype and does not replace legal, financial, medical, or estate-planning advice.
-
